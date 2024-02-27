@@ -74,10 +74,49 @@ void	pop_heap(IT first, std::vector<T> cp, C cmp = C{}) noexcept
 	}
 }
 
-template <class T, typename IT, typename C = std::less<>>
+// example 1  START   (SFINEA)
+
+template	<typename IT>
+using	ItTag = typename std::__iterator_traits<IT>::iterator_category;
+
+template <class T, typename IT, typename C = std::less<>,\
+				std::enable_if_t<std::is_base_of_v<std::forward_iterator_tag, ItTag<IT>>, \
+				int> = 0 >
 void	heap(IT first, IT last, C cmp = C{}) noexcept
 {
 	pop_heap(first, std::move(make_heap<T>(first,last, cmp)), cmp);
 }
+
+//	END
+//---------------------------------------------------------------------------------------------------------
+//  example 2 START   (SFINEA)
+
+template <class T, typename IT, typename C = std::less<>>
+void	my_sort(IT first, IT last, std::forward_iterator_tag, C cmp = C{}) noexcept
+{
+	pop_heap(first, std::move(make_heap<T>(first,last, cmp)), cmp);
+}
+
+//	END
+//---------------------------------------------------------------------------------------------------------
+//  example 3 START   (SFINEA)
+
+template <class T, typename IT, typename C = std::less<>>
+void	my_sort_heap(IT first, IT last, C cmp = C{}) noexcept
+{
+	pop_heap(first, std::move(make_heap<T>(first,last, cmp)), cmp);
+}
+
+template <class T, typename IT, typename C = std::less<>>
+void	sort(IT first, IT last, C cmp = C{}) noexcept
+{
+	if constexpr (std::is_base_of_v<std::input_iterator_tag, ItTag<IT>> || \
+	std::is_base_of_v<std::forward_iterator_tag, ItTag<IT>>)
+	{
+		my_sort_heap(first, last, cmp);
+	}
+}
+
+//	END
 
 }
