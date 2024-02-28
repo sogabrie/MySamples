@@ -12,7 +12,7 @@ void MySorts::Duration::start()
 
 size_t MySorts::Duration::end()
 {
-    return (std::chrono::duration_cast<std::chrono::microseconds>\
+    return (std::chrono::duration_cast<std::chrono::milliseconds>\
     (std::chrono::steady_clock::now() - _start)).count();
 }
 

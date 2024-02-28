@@ -2,7 +2,7 @@
 
 #include <random>
 #include <functional>
-#include <cuchar>
+// #include <cuchar>
 #include <chrono>
 
 namespace MySorts{
@@ -21,6 +21,16 @@ struct Generator
         }
     }
 };
+
+template <typename Counteyner, typename C = std::less<>,
+			class IT = typename Counteyner::const_iterator>
+std::string	check(Counteyner &str, C cmp = C{})
+{
+	if (std::is_sorted(std::begin(str), std::end(str), cmp))
+		return (std::string("OK"));
+	return (std::string("ERROR"));
+}
+
 
 class Duration
 {
