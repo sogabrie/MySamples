@@ -45,39 +45,29 @@ std::vector<T>	make_heap(IT first, IT last, C cmp = C{}) noexcept
 	return cp;
 }
 
+template <class T>
+void	myswap(T &a, T &b)
+{
+	T c = a;
+	a = b;
+	b = c;
+}
+
 template <class T, typename C = std::less<>>
 void	_find(std::vector<T> &cp, size_t i, C cmp = C{}) noexcept
 {
 	if (i > 0)
 	{
-		std::swap(cp[0], cp[i]);
-		for (size_t j = 0; j < i;)
-		{
-			if ((j + 1) * 2 - 1 < i && (j + 1) * 2 < i && \
-			cmp(cp[(j + 1) * 2], cp[(j + 1) * 2 - 1]) && cmp(cp[(j + 1) * 2], cp[j]))
-			{
-				std::swap(cp[(j + 1) * 2], cp[j]);
-				j = (j + 1) * 2;
-			}
-			else if((j + 1) * 2 - 1 < i && cmp(cp[(j + 1) * 2 -1 ], cp[j]))
-			{
-				std::swap(cp[(j + 1) * 2 - 1], cp[j]);
-				j = (j + 1) * 2 - 1;
-			}
-			else
-				break;
-		}
-		// (void)cmp;
 		// std::swap(cp[0], cp[i]);
 		// for (size_t j = 0; j < i;)
 		// {
 		// 	if ((j + 1) * 2 - 1 < i && (j + 1) * 2 < i && \
-		// 	(cp[(j + 1) * 2] < cp[(j + 1) * 2 - 1]) && (cp[(j + 1) * 2] < cp[j]))
+		// 	cmp(cp[(j + 1) * 2], cp[(j + 1) * 2 - 1]) && cmp(cp[(j + 1) * 2], cp[j]))
 		// 	{
 		// 		std::swap(cp[(j + 1) * 2], cp[j]);
 		// 		j = (j + 1) * 2;
 		// 	}
-		// 	else if((j + 1) * 2 - 1 < i && (cp[(j + 1) * 2 -1 ] < cp[j]))
+		// 	else if((j + 1) * 2 - 1 < i && cmp(cp[(j + 1) * 2 -1 ], cp[j]))
 		// 	{
 		// 		std::swap(cp[(j + 1) * 2 - 1], cp[j]);
 		// 		j = (j + 1) * 2 - 1;
@@ -85,6 +75,25 @@ void	_find(std::vector<T> &cp, size_t i, C cmp = C{}) noexcept
 		// 	else
 		// 		break;
 		// }
+
+		(void)cmp;
+		myswap(cp[0], cp[i]);
+		for (size_t j = 0; j < i;)
+		{
+			if ((j + 1) * 2 - 1 < i && (j + 1) * 2 < i && \
+			(cp[(j + 1) * 2] < cp[(j + 1) * 2 - 1]) && (cp[(j + 1) * 2] < cp[j]))
+			{
+				myswap(cp[(j + 1) * 2], cp[j]);
+				j = (j + 1) * 2;
+			}
+			else if((j + 1) * 2 - 1 < i && (cp[(j + 1) * 2 -1 ] < cp[j]))
+			{
+				myswap(cp[(j + 1) * 2 - 1], cp[j]);
+				j = (j + 1) * 2 - 1;
+			}
+			else
+				break;
+		}
 		
 	}
 }
@@ -97,7 +106,8 @@ void	pop_heap(IT first, std::vector<T> &&cp, C cmp = C{}) noexcept
 	{
 		_find(cp, i,cmp);
 		// *first = std::move(cp[i]);
-		std::swap( *first, cp[i]);
+		// std::swap( *first, cp[i]);
+		myswap( *first, cp[i]);
 	}
 	std::cout << "	Pop   heap = " << MySorts::Duration::end() << std::endl;
 }
